@@ -1,21 +1,26 @@
-import { placeholderPropertyObj } from './properties/placeholderPropertyObj.js';
-import { propertyForSaleArr } from './properties/propertyForSaleArr.js';
+import placeholderPropertyObj  from './properties/placeholderPropertyObj.js';
+import propertyForSaleArr  from './properties/propertyForSaleArr.js';
 function getPropertyHtml(propertyForSaleArr=[placeholderPropertyObj]) {
-    let propertyCardsHtml = propertyForSaleArr.map(function(el){
-        return (
-        `
+    return propertyForSaleArr.map(el => {
+       const {
+           propertyLocation,
+           priceGBP,
+           roomsM2,
+           comment,
+           image
+       } = el;
+       const totalRoomSizeM2 = roomsM2.reduce((total, current) => total + current);
+        return `
             <section class="card">
-                <img src="/images/${el.image}">
+                <img src="/images/${image}">
                 <div class="card-right">
-                    <h2>${el.propertyLocation}</h2>
-                    <h3>£${el.priceGBP}</h3>
-                    <p>${el.comment}</p>
-                <h3>${el.roomsM2.reduce((total,currentValue) => {return total + currentValue})} m&sup2;</h3>
+                    <h2>${propertyLocation}</h2>
+                    <h3>£${priceGBP}</h3>
+                    <p>${comment}</p>
+                <h3>${totalRoomSizeM2} m&sup2;</h3>
                 </div>
-            </section>
-        `)
+            </section>`
     }).join('');
-    return propertyCardsHtml;
 }
 
-document.getElementById('container').innerHTML = getPropertyHtml(propertyForSaleArr);
+document.getElementById('container').innerHTML = getPropertyHtml();
